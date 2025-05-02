@@ -1,17 +1,14 @@
 package com.example.blazeqz.presentation.result
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -34,16 +31,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.blazeqz.R
 import com.example.blazeqz.domain.model.QuizQuestion
-import com.example.blazeqz.domain.model.UserAnswer
 import com.example.blazeqz.presentation.theme.CustomGreen
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -126,60 +117,6 @@ fun ResultScreen(
 }
 
 @Composable
-private fun ScoreCard(
-    modifier: Modifier = Modifier,
-    scorePercentage: Int,
-    correctAnswerCount: Int,
-    totalQuestions: Int
-) {
-    val resultText = when (scorePercentage) {
-        in 71..100 -> "Congratulations!\n A great performance!"
-        in 41..70 -> "You did well,\n but there's room for improvement"
-        else -> "You may have struggled this time.\n Mistakes are part of learning, keep going!"
-    }
-    val resultIconResId = when (scorePercentage) {
-        in 71..100 -> R.drawable.ic_laugh
-        in 41..70 -> R.drawable.ic_smiley
-        else -> R.drawable.ic_sad
-    }
-
-    val initialValue = (correctAnswerCount * 100) / 10
-
-    Surface(
-        shadowElevation = 5.dp,
-        shape = RoundedCornerShape(15.dp),
-        color = MaterialTheme.colorScheme.secondaryContainer,
-        modifier = modifier
-    ) {
-        Column {
-            Image(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(20.dp)
-                    .size(100.dp),
-                painter = painterResource(resultIconResId),
-                contentDescription = "Score Emoji"
-            )
-            Text(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = "You answered correctly $correctAnswerCount out of $totalQuestions.",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                text = resultText,
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
-    }
-}
-
-@Composable
 private fun QuestionItem(
     modifier: Modifier = Modifier,
     question: QuizQuestion,
@@ -246,35 +183,4 @@ private fun QuestionItem(
         }
     }
     Spacer(modifier = Modifier.height(10.dp))
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ResultScreenPreview() {
-    val dummyQuestions = List(size = 10) { index ->
-        QuizQuestion(
-            id = "$index",
-            topicCode = 1,
-            question = "This is the demo questions for preview of result screen.",
-            allOptions = listOf("Java", "Python", "Dart", "Kotlin"),
-            correctAnswer = "Kotlin",
-            explanation = "This is the example explanation for test question item. I want to see how it looks on the preview screen when we get a large explanation for any question"
-        )
-    }
-    val dummyAnswers = listOf(
-        UserAnswer(questionId = "1", selectedOption = "Python"),
-        UserAnswer(questionId = "0", selectedOption = "Kotlin"),
-    )
-    ResultScreen(
-        state = ResultState(
-            scorePercentage = 71,
-            correctAnswerCount = 71,
-            totalQuestions = 100,
-            quizQuestions = dummyQuestions,
-            userAnswer = dummyAnswers
-        ),
-        onReportIconClick = {},
-        onStartNewQuiz = {},
-        event = emptyFlow()
-    )
 }

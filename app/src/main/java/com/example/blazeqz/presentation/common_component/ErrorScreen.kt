@@ -1,10 +1,13 @@
 package com.example.blazeqz.presentation.common_component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
@@ -19,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,6 +49,7 @@ fun ErrorScreen(
             Row(
                 modifier = Modifier
                     .clip(MaterialTheme.shapes.medium)
+                    .background(MaterialTheme.colorScheme.primary)
                     .padding(end = 16.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
@@ -55,7 +60,7 @@ fun ErrorScreen(
                     Icon(
                         painter = painterResource(R.drawable.refresh),
                         contentDescription = "reload",
-                        tint = Color.Unspecified,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier
                             .size(18.dp)
                             .rotate(90F)
@@ -65,17 +70,21 @@ fun ErrorScreen(
                 Text(
                     text = "Reload",
                     style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 18.sp
+                    fontSize = 18.sp,
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
 
             }
         }
         Spacer(modifier = Modifier.padding(vertical = 5.dp))
-        Text(
-            text = errorMessage,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.error
-        )
+            Text(
+                text = errorMessage,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center
+//                modifier = Modifier.align(Alignment.Center)
+            )
+
     }
 
 }
@@ -84,7 +93,7 @@ fun ErrorScreen(
 @Composable
 private fun ErrorScreenPreview() {
     ErrorScreen(
-        errorMessage = "",
+        errorMessage = "No Internet connection. check Your network",
         onRefreshIconClicked = {}
     )
 }

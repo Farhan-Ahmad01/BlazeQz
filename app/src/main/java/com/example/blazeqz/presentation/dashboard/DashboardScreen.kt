@@ -205,22 +205,3 @@ private fun QuizTopicSection(
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-private fun PreviewDashboardScreen() {
-    val dummyTopics = List(size = 20) { index ->
-        QuizTopic(id = "1", name = "Android $index", imageUrl = "", code = 0)
-    }
-    val state = DashboardState(
-        questionAttempted = 10,
-        correctAnswer = 7,
-        quizTopics = dummyTopics,
-        isLoading = false,
-    )
-    DashboardScreen(
-        state = state,
-        onAction = {},
-        onTopicCardClick = {}
-    )
-}

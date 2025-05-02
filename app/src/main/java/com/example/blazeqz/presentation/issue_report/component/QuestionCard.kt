@@ -103,21 +103,3 @@ fun QuestionCard(
         }
     }
 }
-
-@Preview
-@Composable
-private fun QuestionCardPreview() {
-    val dummyQuestion = QuizQuestion(
-        id = "1",
-        topicCode = 1,
-        question = "What is the preferred language for native android development?",
-        allOptions = listOf("C++", "Java", "Dart", "Kotlin"),
-        correctAnswer = "Kotlin",
-        explanation = "This is some random explanation for why kotlin is preferred for native android development"
-    )
-    QuestionCard(
-        question = dummyQuestion,
-        isCardExpanded = false,
-        onExpandClick = {}
-    )
-}

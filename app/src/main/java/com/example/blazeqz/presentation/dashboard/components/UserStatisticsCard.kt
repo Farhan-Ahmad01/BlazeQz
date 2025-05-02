@@ -158,14 +158,3 @@ private fun Statistics(
         }
     }
 }
-
-
-@Preview
-@Composable
-private fun StatisticsPreview() {
-    UserStatisticsCard(
-        totalQuestions = 100,
-        questionAttempted = 60,
-        correctAnswers = 60
-    )
-}

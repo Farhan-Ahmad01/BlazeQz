@@ -55,14 +55,3 @@ fun ShimmerEffect(
         )
     }
 }
-
-@Preview
-@Composable
-private fun PreviewShimmerEffect() {
-    ShimmerEffect(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(250.dp)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-    )
-}

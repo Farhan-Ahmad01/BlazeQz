@@ -31,12 +31,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.blazeqz.presentation.issue_report.component.IssueReportScreenTopBar
 import com.example.blazeqz.presentation.issue_report.component.QuestionCard
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 
 @Composable
 fun IssueReportScreen(
@@ -243,15 +241,4 @@ private fun IssueTypeSection(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun IssueReportScreenPreview() {
-    IssueReportScreen(
-        state = IssueReportState(),
-        navigateBack = {},
-        onAction = {},
-        event = emptyFlow()
-    )
 }

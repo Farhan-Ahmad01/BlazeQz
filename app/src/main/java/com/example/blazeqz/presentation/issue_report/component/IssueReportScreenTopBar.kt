@@ -1,6 +1,5 @@
 package com.example.blazeqz.presentation.issue_report.component
 
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,14 +37,5 @@ fun IssueReportScreenTopBar(
             titleContentColor = MaterialTheme.colorScheme.onBackground,
             actionIconContentColor = MaterialTheme.colorScheme.onBackground
         )
-    )
-}
-
-@Preview
-@Composable
-private fun PreviewIssueReportScreenTopBar() {
-    IssueReportScreenTopBar(
-        title = "Report an Issue",
-        onBackQuizButtonClick = {}
     )
 }

@@ -48,7 +48,7 @@ class UserPreferencesRepositoryImpl(
 
     override fun getUsername(): Flow<String> {
         return prefs.data.map { preferences ->
-            preferences[USERNAME_KEY] ?: "Krazy Coder"
+            preferences[USERNAME_KEY] ?: "404 Brain Not Found"
         }
     }
 

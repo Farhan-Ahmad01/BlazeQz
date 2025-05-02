@@ -55,16 +55,3 @@ fun NameEditDialog(
         )
     }
 }
-
-@Preview
-@Composable
-private fun PreviewNameEditDialog() {
-    NameEditDialog(
-        isOpen = true,
-        textFieldValue = "a",
-        usernameError = "Name is too long",
-        onDialogDismiss = {},
-        onConfirmButtonClick = {},
-        onTextFieldValueChange = {}
-    )
-}

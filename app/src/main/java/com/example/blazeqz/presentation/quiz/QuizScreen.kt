@@ -47,7 +47,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.blazeqz.domain.model.QuizQuestion
 import com.example.blazeqz.domain.model.UserAnswer
@@ -57,7 +56,6 @@ import com.example.blazeqz.presentation.quiz.component.QuizScreenLoadingContent
 import com.example.blazeqz.presentation.quiz.component.QuizSubmitButtons
 import com.example.blazeqz.presentation.quiz.component.SubmitQuizDialog
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -382,40 +380,4 @@ private fun OptionItem(
             )
         }
     }
-}
-
-
-//@Preview(showBackground = true)
-@Preview(showBackground = true)
-@Composable
-private fun PreviewQuizScreen() {
-    val dummyQuestions = List(size = 10) { index ->
-        QuizQuestion(
-            id = "${index}",
-            topicCode = 1,
-            question = "What is the purpose of Infrastructure as Code (IaC) tools like Terraform or AWS CloudFormation?",
-            allOptions = listOf(
-                "To Perform the health and performance of infrastructure resources in real-time",
-                "To provide a graphical interface for managing cloud resources.",
-                "To automatically generate application code from infrastructure configuration",
-                "To define and manage infrastructure resources (e.g., servers, databases, networks_ using code, enabling automation, version control, and repeataility"
-            ),
-            correctAnswer = "Kotlin",
-            explanation = "By Google"
-        )
-    }
-    val dummyAnswers = listOf(
-        UserAnswer(questionId = "1", selectedOption = ""),
-        UserAnswer(questionId = "3", selectedOption = ""),
-    )
-    QuizScreen(
-        state = QuizState(
-            questions = dummyQuestions,
-            answers = dummyAnswers,
-        ),
-        navigationToResultScreen = {},
-        navigationToDashboardScreen = {},
-        onAction = {},
-        event = emptyFlow()
-    )
 }

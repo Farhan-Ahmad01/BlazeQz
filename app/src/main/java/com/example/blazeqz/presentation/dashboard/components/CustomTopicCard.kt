@@ -4,17 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,55 +19,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
-import com.example.blazeqz.R
-
-@Composable
-fun TopicCard(
-    modifier: Modifier = Modifier,
-    topicName: String,
-    imageUrl: String,
-    onClick: () -> Unit
-) {
-    Box {
-        Card(
-            modifier = modifier.clickable { onClick() }
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp),
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .padding(bottom = 5.dp)
-                        .size(20.dp),
-                    painter = painterResource(R.drawable.ic_play),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-                Text(
-                    text = topicName,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-        }
-        TopicImage(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(end = 10.dp)
-                .size(100.dp)
-                .offset(y = (-20).dp),
-            imageUrl = imageUrl
-        )
-    }
-}
 
 @Composable
 fun CustomTopicCard(
@@ -124,38 +74,4 @@ fun CustomTopicCard(
             }
         }
     }
-}
-
-@Composable
-private fun TopicImage(
-    modifier: Modifier = Modifier,
-    imageUrl: String
-) {
-    val context = LocalContext.current
-    val imageRequest = ImageRequest
-        .Builder(context)
-        .data(imageUrl)
-        .crossfade(enable = true)
-        .build()
-
-    AsyncImage(
-        modifier = modifier,
-        model = imageRequest,
-        contentDescription = null,
-        alignment = Alignment.TopCenter,
-        placeholder = painterResource(R.drawable.img_topic_placeholder),
-        error = painterResource(R.drawable.img_topic_placeholder)
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun PreviewTopicCard() {
-//    CustomTopicCard(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(600.dp),
-//        topicName = "Android",
-//        onClick = {}
-//    )
 }

@@ -3,7 +3,7 @@ package com.example.blazeqz.presentation.dashboard
 import com.example.blazeqz.domain.model.QuizTopic
 
 data class DashboardState(
-    val username: String = "Krazy Developer",
+    val username: String = "404 Brain Not Found",
     val questionAttempted: Int = 0,
     val correctAnswer: Int = 0,
     val allQuestionsCount: Int = 253,
