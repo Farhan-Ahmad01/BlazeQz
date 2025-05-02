@@ -12,4 +12,6 @@ sealed interface Route {
     data object ResultScreen : Route
     @Serializable
     data class IssueReportScreen(val questionId: String) : Route
+    @Serializable
+    data object PreviewScreen : Route
 }

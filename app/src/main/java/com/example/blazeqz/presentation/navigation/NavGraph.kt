@@ -1,7 +1,5 @@
 package com.example.blazeqz.presentation.navigation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -13,6 +11,7 @@ import com.example.blazeqz.presentation.dashboard.DashboardScreen
 import com.example.blazeqz.presentation.dashboard.DashboardViewModel
 import com.example.blazeqz.presentation.issue_report.IssueReportScreen
 import com.example.blazeqz.presentation.issue_report.IssueReportViewModel
+import com.example.blazeqz.presentation.preview.PreviewScreen
 import com.example.blazeqz.presentation.quiz.QuizScreen
 import com.example.blazeqz.presentation.quiz.QuizViewModel
 import com.example.blazeqz.presentation.result.ResultScreen
@@ -22,11 +21,10 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    paddingValues: PaddingValues
     ) {
 
     NavHost(
-        modifier = Modifier.padding(paddingValues),
+        modifier = Modifier,
         navController = navController,
         startDestination = Route.DashboardScreen
     ) {
@@ -51,7 +49,7 @@ fun NavGraph(
                 event = viewModel.event,
                 onAction = viewModel::onAction,
                 navigationToResultScreen = {
-                    navController.navigate(Route.ResultScreen) {
+                    navController.navigate(Route.PreviewScreen) {
                         popUpTo<Route.QuizScreen> {  inclusive = true }
                     }
                 },
@@ -88,6 +86,25 @@ fun NavGraph(
                 }
             )
         }
+
+        composable<Route.PreviewScreen> {
+            val resultViewModel = koinViewModel<ResultViewModel>()
+            val resultState by resultViewModel.state.collectAsStateWithLifecycle()
+            PreviewScreen(
+                correctAnswerCount = resultState.correctAnswerCount,
+                onPreviewClick = {
+                    navController.navigate(Route.ResultScreen) {
+                        popUpTo<Route.PreviewScreen> {  inclusive = true }
+                    }
+                },
+                onNewQuizClick = {
+                    navController.navigate(Route.DashboardScreen) {
+                        popUpTo<Route.PreviewScreen> {inclusive = true}
+                    }
+                }
+            )
+        }
+
     }
 
 }

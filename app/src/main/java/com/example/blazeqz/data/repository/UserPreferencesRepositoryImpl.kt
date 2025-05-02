@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.blazeqz.data.util.Constant.CORRECT_ANSWERS_PREF_KEY
 import com.example.blazeqz.data.util.Constant.QUESTIONS_ATTEMPTED_PREF_KEY
+import com.example.blazeqz.data.util.Constant.TOTAL_QUESTIONS_COUNT_PREF_KEY
 import com.example.blazeqz.data.util.Constant.USERNAME_PREF_KEY
 import com.example.blazeqz.domain.repository.UserPreferencesRepository
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +21,7 @@ class UserPreferencesRepositoryImpl(
         private val QUESTIONS_ATTEMPTED_KEY = intPreferencesKey(QUESTIONS_ATTEMPTED_PREF_KEY)
         private val CORRECT_ANSWER_KEY  = intPreferencesKey(CORRECT_ANSWERS_PREF_KEY)
         private val USERNAME_KEY  = stringPreferencesKey(USERNAME_PREF_KEY)
+        private val TOTAL_QUESTIONS_COUNT = intPreferencesKey(TOTAL_QUESTIONS_COUNT_PREF_KEY)
     }
 
     override fun getQuestionAttempted(): Flow<Int> {
@@ -53,6 +55,12 @@ class UserPreferencesRepositoryImpl(
     override suspend fun saveUsername(name: String) {
         prefs.edit { preferences ->
             preferences[USERNAME_KEY] = name
+        }
+    }
+
+    override suspend fun savaTotalQuestionsCount(totalQuestionsCount: Int) {
+        prefs.edit { preferences ->
+            preferences[TOTAL_QUESTIONS_COUNT] = totalQuestionsCount
         }
     }
 }

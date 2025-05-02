@@ -1,5 +1,6 @@
 package com.example.blazeqz.presentation.quiz.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,12 +9,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -27,12 +30,17 @@ fun QuizSubmitButtons(
     onSubmitButtonClicked: () -> Unit,
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = 10.dp, vertical = 40.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         OutlinedIconButton(
             onClick = onPreviousButtonClicked,
-            enabled = isPreviousButtonEnabled
+            enabled = isPreviousButtonEnabled,
+            colors = IconButtonDefaults.iconButtonColors(
+                contentColor = MaterialTheme.colorScheme.onBackground
+            )
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -43,7 +51,11 @@ fun QuizSubmitButtons(
 
         Button(
             modifier = Modifier.padding(horizontal = 30.dp),
-            onClick = onSubmitButtonClicked
+            onClick = onSubmitButtonClicked,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            )
         ) {
             Text(
                 modifier = Modifier.padding(horizontal = 10.dp),
@@ -53,7 +65,10 @@ fun QuizSubmitButtons(
 
         OutlinedIconButton(
             onClick = onNextButtonClicked,
-            enabled = isNextButtonEnabled
+            enabled = isNextButtonEnabled,
+            colors = IconButtonDefaults.iconButtonColors(
+                contentColor = MaterialTheme.colorScheme.onBackground
+            )
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowForward,

@@ -8,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.example.blazeqz.presentation.navigation.NavGraph
+import com.example.blazeqz.presentation.preview.PreviewScreen
 import com.example.blazeqz.presentation.theme.BlazeQzTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,13 +18,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BlazeQzTheme {
-                Scaffold { paddingValues ->
                 val navController = rememberNavController()
                 NavGraph(
                     navController = navController,
-                    paddingValues = paddingValues
                 )
-                }
             }
         }
     }

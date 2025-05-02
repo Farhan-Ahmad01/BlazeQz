@@ -3,7 +3,6 @@ package com.example.blazeqz.presentation.result
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.checkScrollableContainerConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,42 +14,38 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.blazeqz.R
 import com.example.blazeqz.domain.model.QuizQuestion
 import com.example.blazeqz.domain.model.UserAnswer
-import com.example.blazeqz.presentation.common_component.CustomCircularProgressIndicator
-import com.example.blazeqz.presentation.common_component.UserProgressCardLayout
-import com.example.blazeqz.presentation.quiz.QuizEvent
 import com.example.blazeqz.presentation.theme.CustomGreen
-import com.example.blazeqz.presentation.theme.gray
-import com.example.blazeqz.presentation.theme.orange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import org.koin.core.component.getScopeId
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResultScreen(
     state: ResultState,
@@ -71,30 +66,40 @@ fun ResultScreen(
         }
     }
 
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(
+                    text = "PREVIEW",
+                ) },
+                actions = {
+                    IconButton(
+                        onClick = onStartNewQuiz
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Exit Quiz"
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onBackground,
+                    actionIconContentColor = MaterialTheme.colorScheme.onBackground,
+                )
+            )
+        }
+    ){ innerPadding ->
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         LazyColumn(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(10.dp)
         ) {
-            item {
-                ScoreCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 80.dp, horizontal = 10.dp),
-                    scorePercentage = state.scorePercentage,
-                    correctAnswerCount = state.correctAnswerCount,
-                    totalQuestions = state.totalQuestions
-                )
-            }
-            item {
-                Text(
-                    text = "Quiz Questions",
-                    style = MaterialTheme.typography.titleLarge,
-                    textDecoration = TextDecoration.Underline
-                )
-            }
             items(state.quizQuestions) { question ->
                 val userAnswer = state.userAnswer
                     .find { it.questionId == question.id }?.selectedOption
@@ -106,15 +111,16 @@ fun ResultScreen(
             }
         }
         Button(
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(vertical = 10.dp)
                 .align(Alignment.CenterHorizontally),
             onClick = onStartNewQuiz
         ) {
             Text(
-                modifier = Modifier.padding(horizontal = 10.dp),
-                text = "Start New Quiz"
+                modifier = Modifier.padding(vertical = 5.dp),
+                text = "New Quiz"
             )
         }
+    }
     }
 
 }
@@ -139,30 +145,37 @@ private fun ScoreCard(
 
     val initialValue = (correctAnswerCount * 100) / 10
 
-    Card(
+    Surface(
+        shadowElevation = 5.dp,
+        shape = RoundedCornerShape(15.dp),
+        color = MaterialTheme.colorScheme.secondaryContainer,
         modifier = modifier
     ) {
-        Image(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(20.dp)
-                .size(100.dp),
-            painter = painterResource(resultIconResId),
-            contentDescription = "Score Emoji"
-        )
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = "You answered correctly $correctAnswerCount out of $totalQuestions.",
-            style = MaterialTheme.typography.titleMedium
-        )
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
-            text = resultText,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center
-        )
+        Column {
+            Image(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(20.dp)
+                    .size(100.dp),
+                painter = painterResource(resultIconResId),
+                contentDescription = "Score Emoji"
+            )
+            Text(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                text = "You answered correctly $correctAnswerCount out of $totalQuestions.",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
+                text = resultText,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
     }
 }
 
@@ -173,9 +186,12 @@ private fun QuestionItem(
     userSelectedAnswer: String?,
     onReportIconClick: () -> Unit
 ) {
-    Column(
-        modifier = modifier
+    Surface(
+        shadowElevation = 5.dp,
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.surfaceContainerHighest,
     ) {
+        Column(modifier = Modifier.padding(5.dp)) {
         Spacer(modifier = Modifier.height(10.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -183,10 +199,14 @@ private fun QuestionItem(
             Text(
                 modifier = Modifier.weight(1f),
                 text = "Q : ${question.question}",
-                fontWeight = FontWeight.Bold
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurface
             )
             IconButton(
-                onClick = onReportIconClick
+                onClick = onReportIconClick,
+                colors = IconButtonDefaults.iconButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onBackground
+                )
             ) {
                 Icon(
                     imageVector = Icons.Default.Info,
@@ -197,29 +217,35 @@ private fun QuestionItem(
 
         question.allOptions.forEachIndexed { index, option ->
             val letter = when (index) {
-                0 -> "A : "
-                1 -> "B : "
-                2 -> "C : "
-                3 -> "D : "
+                0 -> "A  "
+                1 -> "B  "
+                2 -> "C  "
+                3 -> "D  "
                 else -> ""
             }
             val optionColor = when (option) {
                 question.correctAnswer -> CustomGreen
                 userSelectedAnswer -> MaterialTheme.colorScheme.error
-                else -> LocalContentColor.current
+                else -> MaterialTheme.colorScheme.onBackground
+
+
             }
             Text(
                 text = letter + option,
-                color = optionColor
+                color = optionColor,
+                style = MaterialTheme.typography.labelMedium
             )
+            Spacer(modifier = Modifier.height(3.dp))
         }
         Text(
-            modifier = Modifier.padding(vertical = 10.dp),
+            modifier = Modifier.padding(vertical = 7.dp),
             text = question.explanation,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+            style = MaterialTheme.typography.labelMedium
         )
-        HorizontalDivider()
+        }
     }
+    Spacer(modifier = Modifier.height(10.dp))
 }
 
 @Preview(showBackground = true)
@@ -229,10 +255,10 @@ private fun ResultScreenPreview() {
         QuizQuestion(
             id = "$index",
             topicCode = 1,
-            question = "What is the language for Android Dev?",
+            question = "This is the demo questions for preview of result screen.",
             allOptions = listOf("Java", "Python", "Dart", "Kotlin"),
             correctAnswer = "Kotlin",
-            explanation = "Some Explanation"
+            explanation = "This is the example explanation for test question item. I want to see how it looks on the preview screen when we get a large explanation for any question"
         )
     }
     val dummyAnswers = listOf(

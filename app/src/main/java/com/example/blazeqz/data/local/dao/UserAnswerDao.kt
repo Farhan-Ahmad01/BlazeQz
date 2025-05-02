@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.blazeqz.data.local.entity.UserAnswerEntity
-import com.example.blazeqz.domain.model.UserAnswer
 
 @Dao
 interface UserAnswerDao {

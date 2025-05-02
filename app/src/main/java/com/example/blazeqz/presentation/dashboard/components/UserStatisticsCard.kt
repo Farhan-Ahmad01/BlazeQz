@@ -13,9 +13,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,8 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.blazeqz.R
-import com.example.blazeqz.presentation.theme.CustomBlue
-import com.example.blazeqz.presentation.theme.CustomPink
 
 @Composable
 fun UserStatisticsCard(
@@ -39,43 +38,49 @@ fun UserStatisticsCard(
     totalQuestions: Int
 ) {
     val barProgress = if (correctAnswers > 0) {
-         correctAnswers.toFloat() / totalQuestions
+        correctAnswers.toFloat() / totalQuestions
     } else 0f
 
-    Card(
+    Surface(
+        tonalElevation = 5.dp,
+        shape = RoundedCornerShape(15.dp),
+        color = MaterialTheme.colorScheme.secondaryContainer,
         modifier = modifier
     ) {
-        ProgressBar(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth()
-                .height(15.dp),
-            barProgress = barProgress
-        )
-        Row(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            Statistics(
-                value = totalQuestions,
-                description = "Total",
-                iconResId = R.drawable.all_questions
+        Column {
+            Spacer(modifier = Modifier.height(10.dp))
+            ProgressBar(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+                    .height(15.dp),
+                barProgress = barProgress
             )
+            Row(
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                Statistics(
+                    value = totalQuestions,
+                    description = "Total",
+                    iconResId = R.drawable.all_questions
+                )
 
-            Statistics(
-                value = questionAttempted,
-                description = "Attempted",
-                iconResId = R.drawable.attempt_questions
-            )
+                Statistics(
+                    value = questionAttempted,
+                    description = "Attempted",
+                    iconResId = R.drawable.attempt_questions
+                )
 
-            Statistics(
-                value = correctAnswers,
-                description = "Correct",
-                iconResId = R.drawable.questions_done
-            )
-
+                Statistics(
+                    value = correctAnswers,
+                    description = "Correct",
+                    iconResId = R.drawable.questions_done
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
         }
     }
 
@@ -85,7 +90,7 @@ fun UserStatisticsCard(
 fun ProgressBar(
     modifier: Modifier = Modifier,
     barProgress: Float,
-    gradientColor: List<Color> = listOf(CustomPink, CustomBlue)
+    gradientColor: List<Color> = listOf(Color(0xFF00F0B5), Color(0xFFB8FFD9))
 ) {
     Box(
         modifier = modifier
@@ -142,11 +147,13 @@ private fun Statistics(
         Column {
             Text(
                 text = "$value",
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = description,
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface
             )
         }
     }
@@ -159,6 +166,6 @@ private fun StatisticsPreview() {
     UserStatisticsCard(
         totalQuestions = 100,
         questionAttempted = 60,
-        correctAnswers = 50
+        correctAnswers = 60
     )
 }

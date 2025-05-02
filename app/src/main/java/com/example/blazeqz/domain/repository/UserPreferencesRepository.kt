@@ -17,4 +17,6 @@ interface UserPreferencesRepository {
 
     suspend fun saveUsername(name: String)
 
+    suspend fun savaTotalQuestionsCount(totalQuestionsCount: Int)
+
 }

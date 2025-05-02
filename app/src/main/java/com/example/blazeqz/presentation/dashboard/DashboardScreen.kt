@@ -14,29 +14,29 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import com.example.blazeqz.R
 import com.example.blazeqz.domain.model.QuizTopic
 import com.example.blazeqz.presentation.common_component.ErrorScreen
-import com.example.blazeqz.presentation.common_component.UserProgressCardLayout
+import com.example.blazeqz.presentation.dashboard.components.CustomTopicCard
 import com.example.blazeqz.presentation.dashboard.components.NameEditDialog
 import com.example.blazeqz.presentation.dashboard.components.ShimmerEffect
-import com.example.blazeqz.presentation.dashboard.components.TopicCard
 import com.example.blazeqz.presentation.dashboard.components.UserStatisticsCard
 
 @Composable
@@ -56,14 +56,16 @@ fun DashboardScreen(
     )
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
         HeaderSection(
             modifier = Modifier.fillMaxWidth(),
             username = state.username,
             questionAttempted = state.questionAttempted,
-//            totalQuestionsCount = state.allQuestionsCount,
             correctAnswer = state.correctAnswer,
+            totalQuestions = state.allQuestionsCount,
             onEditNameClick = { onAction(DashboardAction.NameEditIconClick) }
         )
 
@@ -85,6 +87,7 @@ private fun HeaderSection(
     username: String,
     questionAttempted: Int,
     correctAnswer: Int,
+    totalQuestions: Int,
     onEditNameClick: () -> Unit
 ) {
     FlowRow(
@@ -93,19 +96,24 @@ private fun HeaderSection(
     ) {
         Column(
             modifier = Modifier
-                .padding(top = 40.dp, start = 10.dp, end = 10.dp)
+                .padding(top = 50.dp, start = 10.dp, end = 10.dp)
         ) {
             Text(
                 text = "Hello",
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
             Row {
                 Text(
                     text = username,
-                    style = MaterialTheme.typography.headlineMedium
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 IconButton(
-                    onClick = onEditNameClick
+                    onClick = onEditNameClick,
+                    colors = IconButtonDefaults.iconButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onBackground
+                    )
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.baseline_edit_24),
@@ -117,16 +125,11 @@ private fun HeaderSection(
                 }
             }
         }
-//        UserProgressCardLayout(
-//            totalQuestions = totalQuestionsCount,
-//            attemptedQuestionsCount = questionAttempted,
-//            correctAnswersCount = correctAnswer
-//        )
         UserStatisticsCard(
             modifier = Modifier
                 .widthIn(max = 500.dp)
                 .padding(10.dp),
-            totalQuestions = 345,
+            totalQuestions = totalQuestions,
             questionAttempted = questionAttempted,
             correctAnswers = correctAnswer
         )
@@ -142,15 +145,19 @@ private fun QuizTopicSection(
     onRefreshIconClicked: () -> Unit,
     onTopicCardClick: (Int) -> Unit
 ) {
+    val possibleHeights = listOf( 260, 200, 187,133, 180, 273, 190, 120, 155, 245, 100, 205, 149, 235, 240, 168, 140, 253, 220, 210, 110, 160
+    )
+    val topicHeights = rememberSaveable(quizTopics) {
+        quizTopics.associate { topic ->
+            topic.code to possibleHeights.random()
+        }
+    }
+    val gridState = rememberLazyStaggeredGridState()
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            modifier = Modifier.padding(10.dp),
-            text = "Begin the Challenge",
-            style = MaterialTheme.typography.titleLarge
-        )
 
         if (errorMessage != null) {
             ErrorScreen(
@@ -158,11 +165,12 @@ private fun QuizTopicSection(
                 onRefreshIconClicked = onRefreshIconClicked
             )
         } else {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 150.dp),
-                contentPadding = PaddingValues(15.dp),
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
-                verticalArrangement = Arrangement.spacedBy(30.dp)
+            LazyVerticalStaggeredGrid(
+                columns = StaggeredGridCells.Fixed(2),
+                contentPadding = PaddingValues(16.dp),
+                state = gridState,
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalItemSpacing = 16.dp
             ) {
                 if (isTopicsLoading) {
                     items(count = 6) {
@@ -175,11 +183,17 @@ private fun QuizTopicSection(
                         )
                     }
                 } else {
-                    items(quizTopics) { topic ->
-                        TopicCard(
+                    items(
+                        items = quizTopics,
+                        key = { topic ->
+                            topic.id
+                        }
+                    ) { topic ->
+                        val height = topicHeights[topic.code]?.dp ?: 150.dp
+                        CustomTopicCard(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(120.dp),
+                                .height(height),
                             topicName = topic.name,
                             imageUrl = topic.imageUrl,
                             onClick = { onTopicCardClick(topic.code) }
@@ -203,7 +217,6 @@ private fun PreviewDashboardScreen() {
         correctAnswer = 7,
         quizTopics = dummyTopics,
         isLoading = false,
-//        errorMessage = "something went off"
     )
     DashboardScreen(
         state = state,

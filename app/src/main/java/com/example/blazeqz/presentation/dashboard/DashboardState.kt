@@ -1,6 +1,5 @@
 package com.example.blazeqz.presentation.dashboard
 
-import com.example.blazeqz.domain.model.QuizQuestion
 import com.example.blazeqz.domain.model.QuizTopic
 
 data class DashboardState(

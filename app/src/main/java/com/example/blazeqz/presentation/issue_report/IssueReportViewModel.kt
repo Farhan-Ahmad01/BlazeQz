@@ -1,7 +1,6 @@
 package com.example.blazeqz.presentation.issue_report
 
 import android.util.Patterns
-import androidx.core.os.requestProfiling
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

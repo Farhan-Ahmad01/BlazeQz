@@ -3,7 +3,6 @@ package com.example.blazeqz.presentation.quiz
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.toRoute
 import com.example.blazeqz.domain.model.UserAnswer
 import com.example.blazeqz.domain.repository.QuizQuestionRepository
@@ -73,23 +72,29 @@ class QuizViewModel(
             QuizAction.ExitQuizButtonClick -> {
                 _state.update { it.copy(isExitQuizDialogOpen = true) }
             }
+
             QuizAction.ExitQuizConfirmButtonClick -> {
                 _state.update { it.copy(isExitQuizDialogOpen = false) }
                 _event.trySend(QuizEvent.NavigateToDashboardScreen)
             }
+
             QuizAction.ExitQuizDialogDismiss -> {
                 _state.update { it.copy(isExitQuizDialogOpen = false) }
             }
+
             QuizAction.Refresh -> {
                 setupQuiz()
             }
+
             QuizAction.SubmitQuizButtonClick -> {
                 _state.update { it.copy(isSubmitQuizDialogOpen = true) }
             }
+
             QuizAction.SubmitQuizConfirmButtonClick -> {
                 _state.update { it.copy(isSubmitQuizDialogOpen = false) }
                 submitQuiz()
             }
+
             QuizAction.SubmitQuizDialogDismiss -> {
                 _state.update { it.copy(isSubmitQuizDialogOpen = false) }
             }
@@ -114,21 +119,21 @@ class QuizViewModel(
     }
 
     private suspend fun getQuizQuestions(topicCode: Int) {
-            questionRepository.fetchAndSaveQuizQuestions(topicCode).onSuccess { questions ->
-                _state.update {
-                    it.copy(
-                        questions = questions,
-                        errorMessage = null
-                    )
-                }
-            }.onFailure { error ->
-                _state.update {
-                    it.copy(
-                        questions = emptyList(),
-                        errorMessage = error.getErrorMessage()
-                    )
-                }
+        questionRepository.fetchAndSaveQuizQuestions(topicCode).onSuccess { questions ->
+            _state.update {
+                it.copy(
+                    questions = questions,
+                    errorMessage = null
+                )
             }
+        }.onFailure { error ->
+            _state.update {
+                it.copy(
+                    questions = emptyList(),
+                    errorMessage = error.getErrorMessage()
+                )
+            }
+        }
     }
 
     private suspend fun getQuizTopicName(topicCode: Int) {
@@ -136,7 +141,7 @@ class QuizViewModel(
             .onSuccess { topic ->
                 _state.update {
                     it.copy(
-                        topBarTitle = topic.name + " Quiz"
+                        topBarTitle = topic.name
                     )
                 }
             }
@@ -165,10 +170,10 @@ class QuizViewModel(
 
 
     private suspend fun saveUserAnswers() {
-            questionRepository.saveUserAnswers(state.value.answers)
-                .onFailure { error ->
-                    _event.send(QuizEvent.ShowToast(error.getErrorMessage()))
-                }
+        questionRepository.saveUserAnswers(state.value.answers)
+            .onFailure { error ->
+                _event.send(QuizEvent.ShowToast(error.getErrorMessage()))
+            }
     }
 
     private suspend fun updateScore() {
@@ -183,13 +188,13 @@ class QuizViewModel(
         val previousAttempted = userPreferencesRepository.getQuestionAttempted().first()
         val previousCorrect = userPreferencesRepository.getCorrectAnswers().first()
 
-            val totalAttempted = previousAttempted + userAnswers.size
-            val totalCorrect = previousCorrect + correctAnswersCount
+        val totalAttempted = previousAttempted + userAnswers.size
+        val totalCorrect = previousCorrect + correctAnswersCount
 
-            userPreferencesRepository.saveScore(
-                questionAttempted = totalAttempted,
-                correctAnswers = totalCorrect
-            )
+        userPreferencesRepository.saveScore(
+            questionAttempted = totalAttempted,
+            correctAnswers = totalCorrect
+        )
     }
 
 }

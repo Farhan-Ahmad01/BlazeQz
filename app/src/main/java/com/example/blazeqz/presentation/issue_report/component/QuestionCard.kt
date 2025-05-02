@@ -51,7 +51,6 @@ fun QuestionCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = backgroundColorAlpha)
         )
-
     ) {
         SelectionContainer {
         Column(
@@ -82,10 +81,10 @@ fun QuestionCard(
                 Column {
                     question?.allOptions?.forEachIndexed { index, option ->
                         val letter = when (index) {
-                            0 -> "A : "
-                            1 -> "B : "
-                            2 -> "C : "
-                            else -> "D : "
+                            0 -> "A  "
+                            1 -> "B  "
+                            2 -> "C  "
+                            else -> "D  "
                         }
 
                         Text(
@@ -95,7 +94,7 @@ fun QuestionCard(
                     }
                     Text(
                         modifier = Modifier.padding(vertical = 10.dp),
-                        text = "Explanation: ${question?.explanation.orEmpty()}",
+                        text = "Explanation : ${question?.explanation.orEmpty()}",
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
