@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.blazeqz"
+    namespace = "com.farhan.blazeqz"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.blazeqz"
+        applicationId = "com.farhan.blazeqz"
         minSdk = 21
         targetSdk = 35
         versionCode = 1
@@ -23,7 +23,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isShrinkResources = true
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
