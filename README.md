@@ -3,7 +3,7 @@
 BlazeQz is a topic-based quiz application that helps users test and improve their knowledge across various computer science categories. Each quiz generates a new set of questions, provides instant scoring, and shows performance analysis. Offline mode is supported through local caching.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/7a65ecf5-81ca-4f6e-a76a-bc16ac159114" width="15%" style="margin-right: 10px;" />
+  <img src="https://github.com/user-attachments/assets/7a65ecf5-81ca-4f6e-a76a-bc16ac159114" width="15%" />&nbsp;&nbsp;
   <img src="https://github.com/user-attachments/assets/c6bf1077-b59a-4265-8c2f-6a2164af144a" width="15%" style="margin-right: 10px;" />
   <img src="https://github.com/user-attachments/assets/fe3c0fdd-b2b4-472f-a687-11cdcf0aa4bc" width="15%" style="margin-right: 10px;" />
   <img src="https://github.com/user-attachments/assets/3c7694f9-d256-4863-9187-8a112a365ece" width="15%" />
