@@ -50,7 +50,7 @@ I developed the entire system, including:
 ## Play Store
 
 Add your app link here:  
-`https://play.google.com/store/apps/details?id=com.farhan.blazeqz`
+https://play.google.com/store/apps/details?id=com.farhan.blazeqz
 
 ## Feedback
 
